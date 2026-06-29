@@ -77,7 +77,7 @@ public abstract class MultiplayerScreenMixin extends Screen {
 
     @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
     private void basicfabricmod$keyPressed(net.minecraft.client.input.KeyInput input, CallbackInfo ci) {
-        int keyCode = input.keyCode();
+        int keyCode = input.getKeycode();
         boolean ctrl = MinecraftClient.getInstance().isCtrlPressed();
         if (basicfabricmod$searchField != null && basicfabricmod$searchField.isFocused() && basicfabricmod$keyboard.isEscape(keyCode)) {
             basicfabricmod$searchField.setText("");

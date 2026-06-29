@@ -35,6 +35,7 @@ import com.example.basicfabricmod.servermanager.ui.state.TooltipRegion;
 import com.example.basicfabricmod.servermanager.ui.state.TooltipRegistry;
 import com.example.basicfabricmod.servermanager.ui.state.VisibleRowCache;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
@@ -143,6 +144,15 @@ public final class ServerManagerListWidget extends AlwaysSelectedEntryListWidget
 
         private Entry(ManagedRowData row) {
             this.row = row;
+        }
+
+        @Override
+        public Text getNarration() {
+            return switch (row.kind()) {
+                case ROOT -> Text.literal(row.label() + ", " + row.serverCount() + " servers");
+                case FOLDER -> Text.literal((row.folder().isCollapsed() ? "Collapsed folder " : "Folder ") + row.folder().getName() + ", " + row.serverCount() + " servers");
+                case SERVER -> Text.literal(row.server().serverInfo().name + (row.server().favorite() ? ", favorite" : ""));
+            };
         }
 
         @Override
@@ -258,7 +268,7 @@ public final class ServerManagerListWidget extends AlwaysSelectedEntryListWidget
         }
 
         @Override
-        public boolean mouseClicked(net.minecraft.client.input.Click click, boolean doubled) {
+        public boolean mouseClicked(Click click, boolean doubled) {
             if (click.button() == 1 && BasicFabricMod.getConfig().isContextMenus()) {
                 openContextMenu();
                 return true;
@@ -283,7 +293,7 @@ public final class ServerManagerListWidget extends AlwaysSelectedEntryListWidget
         }
 
         @Override
-        public boolean mouseDragged(net.minecraft.client.input.Click click, double offsetX, double offsetY) {
+        public boolean mouseDragged(Click click, double offsetX, double offsetY) {
             if (!BasicFabricMod.getConfig().isDragAndDrop()) {
                 return false;
             }
@@ -307,7 +317,7 @@ public final class ServerManagerListWidget extends AlwaysSelectedEntryListWidget
         }
 
         @Override
-        public boolean mouseReleased(net.minecraft.client.input.Click click) {
+        public boolean mouseReleased(Click click) {
             if (!dragAndDropController.isDragging()) {
                 return false;
             }
