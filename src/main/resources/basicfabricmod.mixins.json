@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "com.example.basicfabricmod.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "MultiplayerScreenMixin",
+    "MultiplayerServerListWidgetEntryMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
