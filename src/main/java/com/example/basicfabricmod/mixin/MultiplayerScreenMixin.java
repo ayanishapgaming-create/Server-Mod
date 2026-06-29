@@ -39,7 +39,7 @@ public abstract class MultiplayerScreenMixin extends Screen {
         super(title);
     }
 
-    @Inject(method = "init", at = @At("TAIL"))
+    @Inject(method = "init()V", at = @At("TAIL"))
     private void basicfabricmod$initEnhancedUi(CallbackInfo ci) {
         if (BasicFabricMod.getConfig().isShowSearchBar()) {
             basicfabricmod$searchField = this.addDrawableChild(new TextFieldWidget(this.textRenderer, this.width / 2 - 110, 32, 220, 20, Text.literal("Search")));
@@ -54,7 +54,7 @@ public abstract class MultiplayerScreenMixin extends Screen {
         basicfabricmod$refreshManagedList();
     }
 
-    @Inject(method = "render", at = @At("TAIL"))
+    @Inject(method = "render(Lnet/minecraft/client/gui/DrawContext;IIF)V", at = @At("TAIL"))
     private void basicfabricmod$renderHints(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (basicfabricmod$searchField != null && basicfabricmod$searchField.isFocused() && !basicfabricmod$searchField.getText().isBlank()) {
             context.drawTextWithShadow(this.textRenderer, "Esc clears search", basicfabricmod$searchField.getX(), basicfabricmod$searchField.getY() - 10, 0xAAAAAA);
@@ -64,7 +64,7 @@ public abstract class MultiplayerScreenMixin extends Screen {
         }
     }
 
-    @Inject(method = "refreshWidgetPositions", at = @At("TAIL"))
+    @Inject(method = "refreshWidgetPositions()V", at = @At("TAIL"))
     private void basicfabricmod$refreshPositions(CallbackInfo ci) {
         if (basicfabricmod$searchField != null) {
             basicfabricmod$searchField.setX(this.width / 2 - 110);
@@ -75,9 +75,8 @@ public abstract class MultiplayerScreenMixin extends Screen {
         }
     }
 
-    @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
-    private void basicfabricmod$keyPressed(net.minecraft.client.input.KeyInput input, CallbackInfo ci) {
-        int keyCode = input.getKeycode();
+    @Inject(method = "keyPressed(III)Z", at = @At("HEAD"), cancellable = true)
+    private void basicfabricmod$keyPressed(int keyCode, int scanCode, int modifiers, CallbackInfo ci) {
         boolean ctrl = MinecraftClient.getInstance().isCtrlPressed();
         if (basicfabricmod$searchField != null && basicfabricmod$searchField.isFocused() && basicfabricmod$keyboard.isEscape(keyCode)) {
             basicfabricmod$searchField.setText("");
