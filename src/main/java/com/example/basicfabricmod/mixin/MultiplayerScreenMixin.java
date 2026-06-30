@@ -20,6 +20,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,35 +77,35 @@ public abstract class MultiplayerScreenMixin extends Screen implements Multiplay
     }
 
     @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true, remap = false)
-    private void basicfabricmod$keyPressed(net.minecraft.client.input.KeyInput input, CallbackInfo ci) {
+    private void basicfabricmod$keyPressed(net.minecraft.client.input.KeyInput input, CallbackInfoReturnable<Boolean> cir) {
         int keyCode = input.getKeycode();
         boolean ctrl = MinecraftClient.getInstance().isCtrlPressed();
         if (basicfabricmod$searchField != null && basicfabricmod$searchField.isFocused() && basicfabricmod$keyboard.isEscape(keyCode)) {
             basicfabricmod$searchField.setText("");
             basicfabricmod$uiState.setSearchQuery("");
             basicfabricmod$refreshManagedList();
-            ci.cancel();
+            cir.setReturnValue(true);
             return;
         }
         if (basicfabricmod$keyboard.isFocusSearch(keyCode, ctrl) && basicfabricmod$searchField != null) {
             basicfabricmod$searchField.setFocused(true);
-            ci.cancel();
+            cir.setReturnValue(true);
             return;
         }
         if (basicfabricmod$keyboard.isNewFolder(keyCode, ctrl)) {
             basicfabricmod$folderDialogs.createFolder("New Folder");
             basicfabricmod$refreshManagedList();
-            ci.cancel();
+            cir.setReturnValue(true);
             return;
         }
         if (basicfabricmod$keyboard.isSelectAll(keyCode, ctrl) && basicfabricmod$managedList != null) {
             basicfabricmod$managedList.getSelectionController().selectAll(basicfabricmod$getVisibleAddresses());
-            ci.cancel();
+            cir.setReturnValue(true);
             return;
         }
         if (basicfabricmod$keyboard.isUndo(keyCode, ctrl) && basicfabricmod$managedList != null) {
             basicfabricmod$managedList.performUndo();
-            ci.cancel();
+            cir.setReturnValue(true);
         }
     }
 
