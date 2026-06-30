@@ -54,7 +54,7 @@ public abstract class MultiplayerScreenMixin extends Screen {
         basicfabricmod$refreshManagedList();
     }
 
-    @Inject(method = "render(Lnet/minecraft/client/gui/DrawContext;IIF)V", at = @At("TAIL"))
+    @Inject(method = "render", at = @At("TAIL"), remap = false)
     private void basicfabricmod$renderHints(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (basicfabricmod$searchField != null && basicfabricmod$searchField.isFocused() && !basicfabricmod$searchField.getText().isBlank()) {
             context.drawTextWithShadow(this.textRenderer, "Esc clears search", basicfabricmod$searchField.getX(), basicfabricmod$searchField.getY() - 10, 0xAAAAAA);
@@ -75,7 +75,7 @@ public abstract class MultiplayerScreenMixin extends Screen {
         }
     }
 
-    @Inject(method = "keyPressed(Lnet/minecraft/client/input/KeyInput;)Z", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true, remap = false)
     private void basicfabricmod$keyPressed(net.minecraft.client.input.KeyInput input, CallbackInfo ci) {
         int keyCode = input.getKeycode();
         boolean ctrl = MinecraftClient.getInstance().isCtrlPressed();

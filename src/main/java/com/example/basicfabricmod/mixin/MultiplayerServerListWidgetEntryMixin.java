@@ -33,7 +33,7 @@ public abstract class MultiplayerServerListWidgetEntryMixin {
     @Unique
     private static final int FLAG_BOX_HEIGHT = 9;
 
-    @Inject(method = "render(Lnet/minecraft/client/gui/DrawContext;IIZF)V", at = @At("TAIL"))
+    @Inject(method = "render", at = @At("TAIL"), remap = false)
     private void basicfabricmod$renderFlag(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks, CallbackInfo ci) {
         if (!BasicFabricMod.getConfig().isShowServerCountryFlags()) {
             return;
