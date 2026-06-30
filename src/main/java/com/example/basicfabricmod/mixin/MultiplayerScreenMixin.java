@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(MultiplayerScreen.class)
-public abstract class MultiplayerScreenMixin extends Screen {
+public abstract class MultiplayerScreenMixin extends Screen implements MultiplayerScreenUiAccessor {
     @Shadow @Final protected MultiplayerServerListWidget serverListWidget;
     @Shadow @Final private ServerList serverList;
 
@@ -54,8 +54,8 @@ public abstract class MultiplayerScreenMixin extends Screen {
         basicfabricmod$refreshManagedList();
     }
 
-    @Inject(method = "render", at = @At("TAIL"), remap = false)
-    private void basicfabricmod$renderHints(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    @Override
+    public void basicfabricmod$renderHints(DrawContext context, int mouseX, int mouseY, float delta) {
         if (basicfabricmod$searchField != null && basicfabricmod$searchField.isFocused() && !basicfabricmod$searchField.getText().isBlank()) {
             context.drawTextWithShadow(this.textRenderer, "Esc clears search", basicfabricmod$searchField.getX(), basicfabricmod$searchField.getY() - 10, 0xAAAAAA);
         }
